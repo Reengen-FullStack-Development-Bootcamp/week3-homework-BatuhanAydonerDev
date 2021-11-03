@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     api_endpoint: "https://alpha-vantage.p.rapidapi.com", // Alpha Vantage API endpoint.
-    isAdmin: false, // Control that user is admin.
+    isAdmin: true, // Control that user is admin.
     matchedCompanies: [], // Array of matched companies coming from API.
     companyData: null, // Searching company's data,
   },
@@ -57,6 +57,29 @@ export default new Vuex.Store({
         })
         .then((response) => {
           context.commit("setMatchedCompanies", response.data.bestMatches);
+        });
+    },
+    /**
+     * Get company details using company's symbol.
+     * @param {Object} data - Has symbol attributes.
+     */
+    getCompanyDailyDetails(context, data) {
+      axios
+        .get(`${context.state.api_endpoint}/query`, {
+          params: {
+            symbol: data.symbol,
+            function: "TIME_SERIES_DAILY",
+            outputsize: "compact",
+            datatype: "json",
+          },
+          headers: {
+            "x-rapidapi-host": "alpha-vantage.p.rapidapi.com",
+            "x-rapidapi-key":
+              "09bbce69f1msh35d8a59adc05c29p1e0ca3jsn163d8c7f8e92",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
         });
     },
   },

@@ -10,7 +10,7 @@ tem
 </template>
 
 <script>
-import SearchInput from "../components/SearchInput.vue";
+import SearchInput from "./CustomVuetify/SearchInput.vue";
 
 export default {
   components: {
@@ -29,8 +29,11 @@ export default {
      *
      * @param {Object} value - Company data.
      */
-    getSelectedCompany(value) {
-      console.log(value);
+    getSelectedCompany(company) {
+      this.$router.push({
+        name: `Company`,
+        params: { symbol: company["1. symbol"], company },
+      });
     },
     /**
      * Get companies from API and if keywords is not bigger than 3 characters,
@@ -38,7 +41,7 @@ export default {
      * @param {String} keywords - Keywords from search-input emit.
      */
     searchCompaniesByKeywords(keywords) {
-      if (keywords.length >= 3) {
+      if (keywords.length >= 3 && this.selectedCompany === null) {
         // Dispatch searchCompany to get items from API using keywords.
         this.$store.dispatch("searchCompany", { keywords: keywords });
       } else {
