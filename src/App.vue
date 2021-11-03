@@ -5,7 +5,7 @@
       <v-container>
         <search />
 
-        <router-view />
+        <router-view></router-view>
       </v-container>
     </v-app>
   </div>
