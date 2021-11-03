@@ -1,25 +1,27 @@
 <template>
   <div>
-    <search-input />
+    <v-app>
+      <main-header />
+      <v-container>
+        <search />
+
+        <router-view />
+      </v-container>
+    </v-app>
   </div>
 </template>
 
 <script>
-import SearchInput from "./components/SearchInput.vue";
+import MainHeader from "./components/MainHeader.vue";
+import Search from "./views/Search.vue";
 
 export default {
   components: {
-    SearchInput,
-  },
-  created() {
-    this.$store.dispatch("searchCompany", { keywords: "Microsoft" });
-  },
-  computed: {
-    matchedCompanies() {
-      return [];
-    },
+    MainHeader,
+    Search,
   },
 };
 </script>
+MainHeader
 
 <style lang="scss"></style>

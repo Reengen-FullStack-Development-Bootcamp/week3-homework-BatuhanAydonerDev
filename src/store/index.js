@@ -26,13 +26,17 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    // Change state of isAdmin.
+    changeStateOfAdmin(state) {
+      state.isAdmin = !state.isAdmin;
+    },
     // Set matched companyies' data to matchedCompanies in state.
     setMatchedCompanies(state, companiesData) {
-      state.matchedCompanies = { ...companiesData };
+      state.matchedCompanies = [...companiesData];
     },
     // Remove all matched companies from array.
-    deleteMatchedCompanies() {
-      this.matchedCompanies = [];
+    deleteMatchedCompanies(state) {
+      state.matchedCompanies = [];
     },
   },
   actions: {
@@ -51,8 +55,8 @@ export default new Vuex.Store({
               "09bbce69f1msh35d8a59adc05c29p1e0ca3jsn163d8c7f8e92",
           },
         })
-        .then(() => {
-          context.commit("setMatchedCompanies", ["foo", "bar", "fizz", "buzz"]);
+        .then((response) => {
+          context.commit("setMatchedCompanies", response.data.bestMatches);
         });
     },
   },
