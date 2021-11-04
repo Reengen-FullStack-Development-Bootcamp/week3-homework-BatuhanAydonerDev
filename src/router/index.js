@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import fs from "fs";
 import Company from "../views/Company.vue";
 
 Vue.use(VueRouter);
@@ -21,15 +20,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  let history = {
-    to,
-    from,
-    date: new Date(),
-  };
-  var json = JSON.stringify(history);
-  fs.writeFile(require("../data/history.json"), json, "utf8", () => {
-    console.log("wrote");
-  });
   next();
 });
 

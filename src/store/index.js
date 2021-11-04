@@ -38,6 +38,9 @@ export default new Vuex.Store({
     deleteMatchedCompanies(state) {
       state.matchedCompanies = [];
     },
+    setCompanyDailyStockDetails(state, companyStockDetails) {
+      state.companyData = companyStockDetails;
+    },
   },
   actions: {
     // Search companies using api.
@@ -80,6 +83,22 @@ export default new Vuex.Store({
         })
         .then((response) => {
           console.log(response.data);
+          const dates = Object.keys(response.data["Time Series (Daily)"]).map(
+            (key) => key
+          );
+          let companyStockDetails = [];
+          dates.map((item) => {
+            let obj = {
+              timestamp: item,
+              open: response.data["Time Series (Daily)"][item]["1. open"],
+              high: response.data["Time Series (Daily)"][item]["2. high"],
+              low: response.data["Time Series (Daily)"][item]["3. low"],
+              close: response.data["Time Series (Daily)"][item]["4. close"],
+              volume: response.data["Time Series (Daily)"][item]["5. volume"],
+            };
+            companyStockDetails.push(obj);
+          });
+          context.commit("setCompanyDailyStockDetails", companyStockDetails);
         });
     },
   },
