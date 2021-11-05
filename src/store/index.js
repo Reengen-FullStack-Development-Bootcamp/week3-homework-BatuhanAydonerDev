@@ -53,6 +53,7 @@ export default new Vuex.Store({
       state.companyData = null;
     },
     setCompanyDailyStockDetails(state, companyStockDetails) {
+      state.companyData = null;
       state.companyData = companyStockDetails;
     },
   },

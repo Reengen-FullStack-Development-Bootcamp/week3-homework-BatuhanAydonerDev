@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div v-if="isAdmin">
+    <div v-if="authorized">
       <div v-if="items.length === 0" class="no-log-container">
         <p>There is no any log</p>
       </div>
       <v-btn v-if="items.length > 0" @click="removeAllLogs">Remove All Logs</v-btn>
       <!-- Logs Treeview -->
-      <v-treeview :items="items" v-if="isAdmin">
+      <v-treeview :items="items" v-if="isAdauthorizedmin">
         <template #label="data" style="">
           <div
             :style="{
-              color: data.item.isAdmin ? 'black' : 'red',
-              'font-weight': data.item.isAdmin ? 'normal' : 'bold',
+              color: data.item.authorized ? 'black' : 'red',
+              'font-weight': data.item.authorized ? 'normal' : 'bold',
             }"
           >
             {{ data.item.name }}
@@ -20,7 +20,7 @@
       </v-treeview>
     </div>
     <div v-else class="not-admin">You are not authorized to view this page</div>
-    <v-snackbar v-model="showAlert" :color="isAdmin ? 'white' : 'red'"
+    <v-snackbar v-model="showAlert" :color="authorized ? 'white' : 'red'"
       >You cannot see logs because you are not an admin.
       <template v-slot:action="{ attrs }">
         <v-btn color="white" text v-bind="attrs" @click="showAlert = false">
@@ -36,7 +36,7 @@ export default {
   data: () => ({
     items: [],
     showAlert: false,
-    isAdmin: true,
+    authorized: true,
   }),
   created() {
     const routingHistory = JSON.parse(localStorage.getItem("routingHistory"));
@@ -46,12 +46,12 @@ export default {
         ...routingHistory.map((item, index) => ({
           id: index,
           name: `${new Date(item.date).toLocaleString()} ${
-            !item.isAdmin ? " - Failed" : ""
+            !item.authorized ? " - Failed" : ""
           }`,
-          isAdmin: item.isAdmin,
+          authorized: item.authorized,
           children: [
-            { name: `From: ${item.from}`, isAdmin: item.isAdmin },
-            { name: `To: ${item.to}`, isAdmin: item.isAdmin },
+            { name: `From: ${item.from}`, authorized: item.authorized },
+            { name: `To: ${item.to}`, authorized: item.authorized },
           ],
         })),
       ];
@@ -73,7 +73,7 @@ export default {
   watch: {
     "$store.getters.getIsAdmin"(val) {
       this.showAlert = !val;
-      this.isAdmin = val;
+      this.authorized = val;
     },
   },
 };

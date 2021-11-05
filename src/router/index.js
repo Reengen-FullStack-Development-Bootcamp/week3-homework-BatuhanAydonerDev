@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
     from: from.fullPath,
     to: to.fullPath,
     date: new Date(),
-    isAdmin: store.getters.getIsAdmin,
+    authorized: to.name === "Logs" ? store.getters.getIsAdmin : true,
   };
   history.push(routerHistory);
   localStorage.setItem("routingHistory", JSON.stringify([...history]));
