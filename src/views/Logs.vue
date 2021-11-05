@@ -61,7 +61,7 @@ export default {
   mounted() {
     if (!this.$store.getters.getIsAdmin) {
       this.showAlert = true;
-      this.isAdmin = false;
+      this.authorized = false;
     }
   },
   methods: {

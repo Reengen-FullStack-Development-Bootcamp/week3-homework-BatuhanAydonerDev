@@ -15,7 +15,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="warningDialog = false"> I accept </v-btn>
+          <v-btn color="primary" text @click="closeDialog"> I accept </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -32,6 +32,15 @@ export default {
     return {
       warningDialog: true,
     };
+  },
+  created() {
+    this.warningDialog = this.$store.state.isWarningDialogOpen;
+  },
+  methods: {
+    closeDialog() {
+      this.warningDialog = false;
+      this.$store.commit("changeWarningDialogState");
+    },
   },
 };
 </script>

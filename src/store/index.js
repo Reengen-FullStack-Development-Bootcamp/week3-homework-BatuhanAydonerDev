@@ -18,6 +18,7 @@ export default new Vuex.Store({
         series: "Monthly Time Series",
       },
     },
+    isWarningDialogOpen: true,
   },
   getters: {
     // Returns isAdmin.
@@ -55,6 +56,9 @@ export default new Vuex.Store({
     setCompanyDailyStockDetails(state, companyStockDetails) {
       state.companyData = null;
       state.companyData = companyStockDetails;
+    },
+    changeWarningDialogState(state) {
+      state.isWarningDialogOpen = false;
     },
   },
   actions: {
