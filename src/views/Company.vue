@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col sm="12" md="12" lg="12">
+    <v-col sm="12" md="12" lg="8">
       <div class="chart-container">
         <v-select
           :items="stockTimes"
@@ -12,6 +12,20 @@
         ></v-select>
         <candlestick-chart :stockDetails="stockDetails"></candlestick-chart>
       </div>
+    </v-col>
+    <v-col sm="12" md="12" lg="4">
+      <v-card v-if="companyMetaData">
+        <div class="meta-data">
+          <h4>Information</h4>
+          <p>{{ companyMetaData["1. Information"] }}</p>
+          <h4>Symbol</h4>
+          <p>{{ companyMetaData["2. Symbol"] }}</p>
+          <h4>Last Freshed</h4>
+          <p>{{ companyMetaData["3. Last Freshed"] }}</p>
+          <h4>Time Zone</h4>
+          <p>{{ companyMetaData["5. Time Zone"] }}</p>
+        </div>
+      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -59,6 +73,7 @@ export default {
     "$store.state.companyData": function (val) {
       this.stockDetails = [...val.companyStockDetails];
       this.companyMetaData = val.metaData;
+      console.log(this.companyMetaData);
     },
     selectedStockTime(val) {
       this.stockDetails = [];

@@ -41,7 +41,7 @@ export default {
      * @param {String} keywords - Keywords from search-input emit.
      */
     searchCompaniesByKeywords(keywords) {
-      if (keywords.length >= 3 && this.selectedCompany === null) {
+      if (keywords && keywords.length >= 3 && this.selectedCompany === null) {
         // Dispatch searchCompany to get items from API using keywords.
         this.$store.dispatch("searchCompany", { keywords: keywords });
       } else {

@@ -49,7 +49,7 @@ export default {
         }
 
         const margin = { top: 15, right: 65, bottom: 205, left: 50 },
-          w = 900 - margin.left - margin.right,
+          w = 1000 - margin.left - margin.right,
           h = 625 - margin.top - margin.bottom;
 
         var svg = d3
@@ -116,7 +116,9 @@ export default {
           .attr("height", (d) =>
             d.open === d.close
               ? 1
-              : yScale(Math.min(d.open, d.close)) - yScale(Math.max(d.open, d.close))
+              : yScale(Math.min(d.open, d.close)) - yScale(Math.max(d.open, d.close)) >= 0
+              ? yScale(Math.min(d.open, d.close)) - yScale(Math.max(d.open, d.close))
+              : 0
           )
           .attr("fill", (d) =>
             d.open === d.close ? "silver" : d.open > d.close ? "red" : "green"
@@ -168,7 +170,9 @@ export default {
           resizeTimer = setTimeout(function () {
             xmin = new Date(xDateScale(Math.floor(xScaleZ.domain()[0])));
             xmax = new Date(xDateScale(Math.floor(xScaleZ.domain()[1])));
-            let filtered = prices.filter((d) => d.Date >= xmin && d.Date <= xmax);
+            let filtered = prices.filter(
+              (d) => d.timestamp >= xmin && d.timestamp <= xmax
+            );
             let minP = +d3.min(filtered, (d) => d.Low);
             let maxP = +d3.max(filtered, (d) => d.High);
             let buffer = Math.floor((maxP - minP) * 0.1);
@@ -177,18 +181,18 @@ export default {
             candles
               .transition()
               .duration(800)
-              .attr("y", (d) => yScale(Math.max(d.Open, d.Close)))
+              .attr("y", (d) => yScale(Math.max(d.open, d.close)))
               .attr("height", (d) =>
-                d.Open === d.Close
+                d.open === d.close
                   ? 1
-                  : yScale(Math.min(d.Open, d.Close)) - yScale(Math.max(d.Open, d.Close))
+                  : yScale(Math.min(d.open, d.close)) - yScale(Math.max(d.open, d.close))
               );
 
             stems
               .transition()
               .duration(800)
-              .attr("y1", (d) => yScale(d.High))
-              .attr("y2", (d) => yScale(d.Low));
+              .attr("y1", (d) => yScale(d.high))
+              .attr("y2", (d) => yScale(d.low));
 
             gY.transition().duration(800).call(d3.axisLeft().scale(yScale));
           }, 500);
@@ -196,32 +200,35 @@ export default {
 
         function zoomend() {
           var t = d3.event.transform;
+          console.log(t);
           let xScaleZ = t.rescaleX(xScale);
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(function () {
             xmin = new Date(xDateScale(Math.floor(xScaleZ.domain()[0])));
             let xmax = new Date(xDateScale(Math.floor(xScaleZ.domain()[1])));
-            let filtered = prices.filter((d) => d.Date >= xmin && d.Date <= xmax);
-            let minP = +d3.min(filtered, (d) => d.Low);
-            let maxP = +d3.max(filtered, (d) => d.High);
+            let filtered = prices.filter(
+              (d) => d.timestamp >= xmin && d.timestamp <= xmax
+            );
+            let minP = +d3.min(filtered, (d) => d.low);
+            let maxP = +d3.max(filtered, (d) => d.high);
             let buffer = Math.floor((maxP - minP) * 0.1);
 
             yScale.domain([minP - buffer, maxP + buffer]);
             candles
               .transition()
               .duration(800)
-              .attr("y", (d) => yScale(Math.max(d.Open, d.Close)))
+              .attr("y", (d) => yScale(Math.max(d.open, d.close)))
               .attr("height", (d) =>
-                d.Open === d.Close
+                d.open === d.close
                   ? 1
-                  : yScale(Math.min(d.Open, d.Close)) - yScale(Math.max(d.Open, d.Close))
+                  : yScale(Math.min(d.open, d.close)) - yScale(Math.max(d.open, d.close))
               );
 
             stems
               .transition()
               .duration(800)
-              .attr("y1", (d) => yScale(d.High))
-              .attr("y2", (d) => yScale(d.Low));
+              .attr("y1", (d) => yScale(d.high))
+              .attr("y2", (d) => yScale(d.low));
 
             gY.transition().duration(800).call(d3.axisLeft().scale(yScale));
           }, 500);

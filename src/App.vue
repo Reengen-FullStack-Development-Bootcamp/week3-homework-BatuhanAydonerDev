@@ -3,8 +3,6 @@
     <v-app>
       <main-header />
       <v-container>
-        <search />
-
         <router-view></router-view>
       </v-container>
     </v-app>
@@ -13,12 +11,10 @@
 
 <script>
 import MainHeader from "./components/MainHeader.vue";
-import Search from "./components/Search.vue";
 
 export default {
   components: {
     MainHeader,
-    Search,
   },
 };
 </script>
