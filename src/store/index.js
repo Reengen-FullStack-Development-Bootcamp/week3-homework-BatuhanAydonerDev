@@ -10,6 +10,14 @@ export default new Vuex.Store({
     isAdmin: true, // Control that user is admin.
     matchedCompanies: [], // Array of matched companies coming from API.
     companyData: null, // Searching company's data,
+    api_functions: {
+      daily: { function: "TIME_SERIES_DAILY", series: "Time Series (Daily)" },
+      weekly: { function: "TIME_SERIES_WEEKLY", series: "Weekly Time Series" },
+      monthly: {
+        function: "TIME_SERIES_MONTHLY",
+        series: "Monthly Time Series",
+      },
+    },
   },
   getters: {
     // Returns isAdmin.
@@ -24,6 +32,9 @@ export default new Vuex.Store({
     getCompanyData(state) {
       return state.companyData;
     },
+    getApiFunctions(state) {
+      return state.api_functions;
+    },
   },
   mutations: {
     // Change state of isAdmin.
@@ -37,6 +48,9 @@ export default new Vuex.Store({
     // Remove all matched companies from array.
     deleteMatchedCompanies(state) {
       state.matchedCompanies = [];
+    },
+    deleteCompanyData(state) {
+      state.companyData = null;
     },
     setCompanyDailyStockDetails(state, companyStockDetails) {
       state.companyData = companyStockDetails;
@@ -63,15 +77,18 @@ export default new Vuex.Store({
         });
     },
     /**
-     * Get company details using company's symbol.
-     * @param {Object} data - Has symbol attributes.
+     * Get company's stock details using company's symbol.
+     * @param {Object} data - Has symbol and function attributes.
+     * symbol attribute is company's symbol.
+     * function attribute is about detail and it can be TIME_SERIES_DAILY,
+     * TIME_SERIES_WEEKLY and TIME_SERIES_MONTHLY.
      */
     getCompanyDailyDetails(context, data) {
       axios
         .get(`${context.state.api_endpoint}/query`, {
           params: {
             symbol: data.symbol,
-            function: "TIME_SERIES_DAILY",
+            function: data.function,
             outputsize: "compact",
             datatype: "json",
           },
@@ -82,19 +99,29 @@ export default new Vuex.Store({
           },
         })
         .then((response) => {
-          console.log(response.data);
-          const dates = Object.keys(response.data["Time Series (Daily)"]).map(
-            (key) => key
-          );
+          let series = "";
+          switch (data.function) {
+            case context.state.api_functions.daily.function:
+              series = context.state.api_functions.daily.series;
+              break;
+            case context.state.api_functions.weekly.function:
+              series = context.state.api_functions.weekly.series;
+              break;
+            case context.state.api_functions.monthly.function:
+              series = context.state.api_functions.monthly.series;
+              break;
+          }
+          const dates = Object.keys(response.data[series]).map((key) => key);
+
           let companyStockDetails = [];
           dates.map((item) => {
             let obj = {
               timestamp: item,
-              open: response.data["Time Series (Daily)"][item]["1. open"],
-              high: response.data["Time Series (Daily)"][item]["2. high"],
-              low: response.data["Time Series (Daily)"][item]["3. low"],
-              close: response.data["Time Series (Daily)"][item]["4. close"],
-              volume: response.data["Time Series (Daily)"][item]["5. volume"],
+              open: response.data[series][item]["1. open"],
+              high: response.data[series][item]["2. high"],
+              low: response.data[series][item]["3. low"],
+              close: response.data[series][item]["4. close"],
+              volume: response.data[series][item]["5. volume"],
             };
             companyStockDetails.push(obj);
           });
