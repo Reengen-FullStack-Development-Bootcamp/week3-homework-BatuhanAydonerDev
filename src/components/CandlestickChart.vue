@@ -1,5 +1,7 @@
 <template>
-  <svg id="container" ref="chart"></svg>
+  <div class="chart-container">
+    <svg id="container" ref="chart"></svg>
+  </div>
 </template>
 
 <script>
@@ -262,3 +264,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.chart-container {
+  overflow: auto;
+}
+</style>

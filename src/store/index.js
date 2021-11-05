@@ -115,7 +115,7 @@ export default new Vuex.Store({
 
           let companyStockDetails = [];
           dates.map((item) => {
-            let obj = {
+            let detail = {
               timestamp: item,
               open: response.data[series][item]["1. open"],
               high: response.data[series][item]["2. high"],
@@ -123,9 +123,12 @@ export default new Vuex.Store({
               close: response.data[series][item]["4. close"],
               volume: response.data[series][item]["5. volume"],
             };
-            companyStockDetails.push(obj);
+            companyStockDetails.push(detail);
           });
-          context.commit("setCompanyDailyStockDetails", companyStockDetails);
+          context.commit("setCompanyDailyStockDetails", {
+            companyStockDetails,
+            metaData: response.data["Meta Data"],
+          });
         });
     },
   },
