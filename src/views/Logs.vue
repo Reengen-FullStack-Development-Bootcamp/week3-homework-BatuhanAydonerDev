@@ -6,7 +6,7 @@
       </div>
       <v-btn v-if="items.length > 0" @click="removeAllLogs">Remove All Logs</v-btn>
       <!-- Logs Treeview -->
-      <v-treeview :items="items" v-if="isAdauthorizedmin">
+      <v-treeview :items="items" v-if="authorized">
         <template #label="data" style="">
           <div
             :style="{
