@@ -1,6 +1,7 @@
 tem
 <template>
   <div>
+    <!-- Input -->
     <search-input
       :items="matchedCompanies"
       @selected-item="getSelectedCompany"

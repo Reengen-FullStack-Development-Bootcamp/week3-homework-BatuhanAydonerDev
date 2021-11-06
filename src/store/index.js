@@ -10,6 +10,7 @@ export default new Vuex.Store({
     isAdmin: true, // Control that user is admin.
     matchedCompanies: [], // Array of matched companies coming from API.
     companyData: null, // Searching company's data,
+    // Time series functions for API.
     api_functions: {
       daily: { function: "TIME_SERIES_DAILY", series: "Time Series (Daily)" },
       weekly: { function: "TIME_SERIES_WEEKLY", series: "Weekly Time Series" },
@@ -18,6 +19,7 @@ export default new Vuex.Store({
         series: "Monthly Time Series",
       },
     },
+    // Show or hide dialog.
     isWarningDialogOpen: true,
   },
   getters: {
@@ -33,6 +35,7 @@ export default new Vuex.Store({
     getCompanyData(state) {
       return state.companyData;
     },
+    // Returns api functions.
     getApiFunctions(state) {
       return state.api_functions;
     },
@@ -50,19 +53,28 @@ export default new Vuex.Store({
     deleteMatchedCompanies(state) {
       state.matchedCompanies = [];
     },
+    // Remove selected company's stock details.
     deleteCompanyData(state) {
       state.companyData = null;
     },
-    setCompanyDailyStockDetails(state, companyStockDetails) {
+    /**
+     * Set companyStockDetails to companyData in state.
+     * @param{Object} companyStockDetails - It has companyStockDetail and metaData attributes.
+     */
+    setCompanyStockDetails(state, companyStockDetails) {
       state.companyData = null;
       state.companyData = companyStockDetails;
     },
+    // Change isWarningDialogOpen state.
     changeWarningDialogState(state) {
       state.isWarningDialogOpen = false;
     },
   },
   actions: {
-    // Search companies using api.
+    /**
+     * Search companies using api.
+     * @param {Object} data - It has keywords attribute to send API.
+     */
     searchCompany(context, data) {
       axios
         .get(`${context.state.api_endpoint}/query`, {
@@ -130,7 +142,7 @@ export default new Vuex.Store({
             };
             companyStockDetails.push(detail);
           });
-          context.commit("setCompanyDailyStockDetails", {
+          context.commit("setCompanyStockDetails", {
             companyStockDetails,
             metaData: response.data["Meta Data"],
           });

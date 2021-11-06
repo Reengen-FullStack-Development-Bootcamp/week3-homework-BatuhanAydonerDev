@@ -8,41 +8,34 @@
 import * as d3 from "d3";
 export default {
   props: {
+    // Stock details.
     stockDetails: {
       type: Array,
       required: true,
     },
   },
   watch: {
+    // Watch stockDetails to rerender chart.
     stockDetails(val) {
-      console.log(val);
       if (val.length > 0) {
         this.createCandlestickChart();
       }
     },
   },
   methods: {
+    /**
+     * Create candlestick chart if stockDetails is not empty.
+     */
     createCandlestickChart() {
+      // Chart' ref.
       this.$refs.chart.innerHTML = "";
+      // Stock details.
       const history = this.stockDetails;
       const wrap = this.wrap;
       d3.csv("").then(function (prices) {
         prices = history;
-        /* const months = {
-      0: "Jan",
-      1: "Feb",
-      2: "Mar",
-      3: "Apr",
-      4: "May",
-      5: "Jun",
-      6: "Jul",
-      7: "Aug",
-      8: "Sep",
-      9: "Oct",
-      10: "Nov",
-      11: "Dec",
-    }; */
 
+        // Change date format.
         var dateFormat = d3.timeParse("%Y-%m-%d");
         for (var i = 0; i < prices.length; i++) {
           prices[i]["timestamp"] = dateFormat(prices[i]["timestamp"]);
@@ -52,6 +45,7 @@ export default {
           w = 1000 - margin.left - margin.right,
           h = 625 - margin.top - margin.bottom;
 
+        // Create Svg.
         var svg = d3
           .select("#container")
           .attr("width", w + margin.left + margin.right)
@@ -200,7 +194,6 @@ export default {
 
         function zoomend() {
           var t = d3.event.transform;
-          console.log(t);
           let xScaleZ = t.rescaleX(xScale);
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(function () {

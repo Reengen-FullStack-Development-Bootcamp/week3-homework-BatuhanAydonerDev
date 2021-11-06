@@ -1,7 +1,11 @@
 <template>
+  <!-- Row -->
   <v-row>
+    <!-- Col -->
     <v-col sm="12" md="12" lg="8">
+      <!-- Chart Container -->
       <div class="chart-container">
+        <!-- Company Select -->
         <v-select
           :items="stockTimes"
           v-model="selectedStockTime"
@@ -10,10 +14,13 @@
           item-value="abbr"
           outlined
         ></v-select>
+        <!-- Candlestick Chart -->
         <candlestick-chart :stockDetails="stockDetails"></candlestick-chart>
       </div>
     </v-col>
+    <!-- Col -->
     <v-col sm="12" md="12" lg="4">
+      <!-- Company Detail Card -->
       <v-card v-if="companyMetaData">
         <div class="meta-data">
           <h4>Information</h4>
@@ -39,24 +46,27 @@ export default {
     CandlestickChart,
   },
   props: {
+    // Compant details
     company: {
       type: Object,
     },
   },
   data() {
     return {
-      stockDetails: [],
-      companyMetaData: null,
-      companySymbol: null,
+      stockDetails: [], // Stock details coming from API.
+      companyMetaData: null, // Company details coming from API.
+      companySymbol: null, // Company symbol at URL params.
+      // Stock time selections for select input.
       stockTimes: [
         { state: "Daily Details", abbr: this.getApiFunctions().daily.function },
         { state: "Weekly Details", abbr: this.getApiFunctions().weekly.function },
         { state: "Monthly Details", abbr: this.getApiFunctions().monthly.function },
       ],
-      selectedStockTime: this.getApiFunctions().daily.function,
+      selectedStockTime: this.getApiFunctions().daily.function, // Selected stock time.
     };
   },
   created() {
+    // Company symbol value at URL params.
     const symbol = this.$route.params.symbol;
     this.companySymbol = symbol;
     this.getCompanyDailyDetails({
@@ -70,11 +80,17 @@ export default {
     ...mapMutations(["deleteMatchedCompanies", "deleteCompanyData"]),
   },
   watch: {
+    /**
+     * Watch companyData in store to show in select input and
+     * get company meta data.
+     */
     "$store.state.companyData": function (val) {
       this.stockDetails = [...val.companyStockDetails];
       this.companyMetaData = val.metaData;
-      console.log(this.companyMetaData);
     },
+    /**
+     * Watch selectedStocktime to send API to get company's stock data.
+     */
     selectedStockTime(val) {
       this.stockDetails = [];
       this.companyMetaData = null;
@@ -83,6 +99,10 @@ export default {
         function: val,
       });
     },
+    /**
+     * Watch route to get company' stock details
+     * using symbol  at URL.
+     */
     $route(val) {
       this.selectedStockTime = this.getApiFunctions().daily.function;
       this.getCompanyDailyDetails({

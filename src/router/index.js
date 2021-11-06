@@ -35,13 +35,15 @@ const router = new VueRouter({
   routes,
 });
 
+// Save each route to localstorage.
 router.beforeEach((to, from, next) => {
+  // Get route history from localstorage.
   const history = localStorage.getItem("routingHistory")
     ? JSON.parse(localStorage.getItem("routingHistory"))
     : [];
   const routerHistory = {
-    from: from.fullPath,
-    to: to.fullPath,
+    from: from.fullPath, // Fullpath at from.
+    to: to.fullPath, // Fullpath at to.
     date: new Date(),
     authorized: to.name === "Logs" ? store.getters.getIsAdmin : true,
   };

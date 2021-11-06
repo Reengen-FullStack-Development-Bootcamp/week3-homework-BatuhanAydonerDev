@@ -1,15 +1,19 @@
 <template>
   <div>
+    <!-- Appbar -->
     <v-app-bar elevation="4" dense dark class="main-header">
+      <!-- Router Link -->
       <router-link to="/" class="title-link"
         ><v-toolbar-title>stocker.com</v-toolbar-title></router-link
       >
 
       <v-spacer></v-spacer>
       <div style="margin-right: 20px">
+        <!-- Router Link -->
         <router-link to="/logs" class="logs-link">Logs</router-link>
       </div>
       <div>
+        <!-- Switch -->
         <v-switch v-model="isAdmin" hide-details="" label="Admin"></v-switch>
       </div>
     </v-app-bar>
@@ -20,7 +24,7 @@
 export default {
   data() {
     return {
-      isAdmin: this.$store.getters["getIsAdmin"],
+      isAdmin: this.$store.getters["getIsAdmin"], // Switch changes isAdmin and it take first value from store.
     };
   },
   watch: {

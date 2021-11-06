@@ -1,4 +1,5 @@
 <template>
+  <!-- Autocomplete Input -->
   <v-autocomplete
     v-model="selectedItem"
     :search-input.sync="keywords"
@@ -29,7 +30,7 @@
 <script>
 export default {
   props: {
-    // Data to use in input.
+    // Items to use in input.
     items: {
       type: Array,
       required: false,

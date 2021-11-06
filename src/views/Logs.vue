@@ -1,9 +1,11 @@
 <template>
   <div>
     <div v-if="authorized">
+      <!-- No log Container -->
       <div v-if="items.length === 0" class="no-log-container">
         <p>There is no any log</p>
       </div>
+      <!-- Remove Button -->
       <v-btn v-if="items.length > 0" @click="removeAllLogs">Remove All Logs</v-btn>
       <!-- Logs Treeview -->
       <v-treeview :items="items" v-if="authorized">
@@ -20,6 +22,7 @@
       </v-treeview>
     </div>
     <div v-else class="not-admin">You are not authorized to view this page</div>
+    <!-- Snackbar -->
     <v-snackbar v-model="showAlert" :color="authorized ? 'white' : 'red'"
       >You cannot see logs because you are not an admin.
       <template v-slot:action="{ attrs }">
@@ -34,16 +37,17 @@
 <script>
 export default {
   data: () => ({
-    items: [],
-    showAlert: false,
-    authorized: true,
+    items: [], // Logs array coming from localstorage.
+    showAlert: false, // Show or hide alert.
+    authorized: true, // Control that user is admin.
   }),
   created() {
-    const routingHistory = JSON.parse(localStorage.getItem("routingHistory"));
-    console.log(routingHistory);
-    if (routingHistory) {
+    // Get logs from localstorage.
+    const logs = JSON.parse(localStorage.getItem("routingHistory"));
+
+    if (logs) {
       this.items = [
-        ...routingHistory.map((item, index) => ({
+        ...logs.map((item, index) => ({
           id: index,
           name: `${new Date(item.date).toLocaleString()} ${
             !item.authorized ? " - Failed" : ""
@@ -55,7 +59,6 @@ export default {
           ],
         })),
       ];
-      console.log(this.items);
     }
   },
   mounted() {
@@ -65,6 +68,7 @@ export default {
     }
   },
   methods: {
+    // Remove all logs in localstorage.
     removeAllLogs() {
       localStorage.removeItem("routingHistory");
       this.items = [];
