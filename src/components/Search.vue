@@ -30,6 +30,7 @@ export default {
      * @param {Object} value - Company data.
      */
     getSelectedCompany(company) {
+      this.selectedCompany = company;
       this.$router.push({
         name: `Company`,
         params: { symbol: company["1. symbol"], company },
@@ -41,13 +42,14 @@ export default {
      * @param {String} keywords - Keywords from search-input emit.
      */
     searchCompaniesByKeywords(keywords) {
-      if (keywords && keywords.length >= 3 && this.selectedCompany === null) {
+      if (keywords && keywords.length >= 2 && this.selectedCompany === null) {
         // Dispatch searchCompany to get items from API using keywords.
         this.$store.dispatch("searchCompany", { keywords: keywords });
       } else {
         // In order to remove all items, commit deleteMatchedCompanies.
         this.$store.commit("deleteMatchedCompanies");
       }
+      this.selectedCompany = null;
     },
   },
   computed: {
