@@ -12,6 +12,7 @@
     outlined
     label="Companies"
     placeholder="Search a company"
+    messages="Firstly, enter keywords, click search button and then click search input."
     return-object
   >
     <template v-slot:item="data">

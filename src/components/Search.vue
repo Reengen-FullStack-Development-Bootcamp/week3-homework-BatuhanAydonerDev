@@ -1,12 +1,19 @@
 tem
 <template>
   <div>
-    <!-- Input -->
-    <search-input
-      :items="matchedCompanies"
-      @selected-item="getSelectedCompany"
-      @keywords="searchCompaniesByKeywords"
-    />
+    <v-row>
+      <v-col sm="12" md="8">
+        <!-- Input -->
+        <search-input
+          :items="matchedCompanies"
+          @selected-item="getSelectedCompany"
+          @keywords="setKeywords"
+        />
+      </v-col>
+      <v-col sm="12" md="4">
+        <v-btn @click="searchCompaniesByKeywords">Search</v-btn>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -20,7 +27,7 @@ export default {
   data() {
     return {
       selectedCompany: null, // Selected item from search-input emit.
-      keywords: null, // Keywords from search-input emit.
+      keywords: "", // Keywords from search-input emit.
     };
   },
   methods: {
@@ -42,15 +49,18 @@ export default {
      * execute deleteMatchedCompanies() in mutations to remove items.
      * @param {String} keywords - Keywords from search-input emit.
      */
-    searchCompaniesByKeywords(keywords) {
-      if (keywords && keywords.length >= 2 && this.selectedCompany === null) {
+    searchCompaniesByKeywords() {
+      if (this.keywords && this.keywords.length > 0) {
         // Dispatch searchCompany to get items from API using keywords.
-        this.$store.dispatch("searchCompany", { keywords: keywords });
+        this.$store.dispatch("searchCompany", { keywords: this.keywords });
       } else {
         // In order to remove all items, commit deleteMatchedCompanies.
         this.$store.commit("deleteMatchedCompanies");
       }
       this.selectedCompany = null;
+    },
+    setKeywords(keywords) {
+      this.keywords = keywords;
     },
   },
   computed: {
