@@ -1,24 +1,25 @@
-# stocker-vuejs
+# Stocker - Vuejs
 
-## Project setup
-```
-npm install
-```
+This is a mini vuejs project. https://rapidapi.com/alphavantage/api/alpha-vantage/ is used as API source.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Demo website: 
+https://stocker-vuejs.vercel.app/
 
-### Compiles and minifies for production
-```
-npm run build
-```
+<img src="https://github.com/BatuhanAydonerDev/stocker-vuejs/blob/master/stocker-vuejs.gif?raw=true" alt="Github Finder - VUEJS" width="600" />
 
-### Lints and fixes files
-```
-npm run lint
-```
+## About The Project
+- [x] Component Structure
+- [x] Responsive design
+- [x] Routing (Vue Router)
+- [x] Vuex 
+- [x] Vuetify
+- [x] d3.js Chart
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Used Libraries
+- [Vue Router](https://router.vuejs.org/)
+- [Vuex](https://vuex.vuejs.org/)
+- [Vuetify](https://vuetifyjs.com/)
+- [d3.js](https://d3js.org/)
+
+## Used APIs
+- [RapidAPI](https://rapidapi.com/)
