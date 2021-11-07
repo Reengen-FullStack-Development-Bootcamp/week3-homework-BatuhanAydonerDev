@@ -5,7 +5,7 @@ This is a mini vuejs project. https://rapidapi.com/alphavantage/api/alpha-vantag
 Demo website: 
 https://stocker-vuejs.vercel.app/
 
-<img src="https://github.com/BatuhanAydonerDev/stocker-vuejs/blob/master/stocker-vuejs.gif?raw=true" alt="Github Finder - VUEJS" width="600" />
+<img src="https://github.com/BatuhanAydonerDev/stocker-vuejs/blob/master/stocker.gif?raw=true" alt="Github Finder - VUEJS" width="600" />
 
 ## About The Project
 - [x] Component Structure
