@@ -27,7 +27,7 @@ export default {
      * Create candlestick chart if stockDetails is not empty.
      */
     createCandlestickChart() {
-      // Chart' ref.
+      // Chart's ref.
       this.$refs.chart.innerHTML = "";
       // Stock details.
       const history = this.stockDetails;
@@ -42,7 +42,7 @@ export default {
         }
 
         const margin = { top: 15, right: 65, bottom: 205, left: 50 },
-          w = 1000 - margin.left - margin.right,
+          w = 1100 - margin.left - margin.right,
           h = 625 - margin.top - margin.bottom;
 
         // Create Svg.
