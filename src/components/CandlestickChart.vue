@@ -127,10 +127,10 @@ export default {
           .attr("class", "stem")
           .attr("x1", (d, i) => xScale(i) - xBand.bandwidth() / 2)
           .attr("x2", (d, i) => xScale(i) - xBand.bandwidth() / 2)
-          .attr("y1", (d) => yScale(d.High))
-          .attr("y2", (d) => yScale(d.Low))
+          .attr("y1", (d) => yScale(d.high))
+          .attr("y2", (d) => yScale(d.low))
           .attr("stroke", (d) =>
-            d.Open === d.Close ? "white" : d.Open > d.Close ? "red" : "green"
+            d.open === d.close ? "white" : d.open > d.close ? "red" : "green"
           );
 
         svg
